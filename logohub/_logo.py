@@ -27,7 +27,8 @@ class Logo:
     _text_h = 0
     # other size
     _padding = 0
-    _text_margin = 0
+    _text_margin_w = 0
+    _text_margin_h = 0
     _round_radius = 0
 
     def __init__(self, font_size, prefix, suffix):
@@ -47,42 +48,45 @@ class Logo:
         # Measure text size
         self._prefix_w, self._text_h = self._font.getsize(self._prefix)
         self._suffix_w, _ = self._font.getsize(self._suffix)
+        # Fix text height
+        self._text_h += int(math.ceil(font_size / 6.0))
         # Calculate sizes bases on the font size
         self._padding = int(math.ceil(font_size / 3.0))
-        self._text_margin = int(math.ceil(font_size / 10.0))
+        self._text_margin_w = int(math.ceil(font_size / 10.0))
+        self._text_margin_h = int(math.ceil(font_size / 10.0))
         self._round_radius = int(math.ceil(font_size / 10.0))
 
     def render_image(self):
         # Create image
-        image_h = self._padding * 2 + self._text_margin * 2 + self._text_h
-        image_w = self._padding * 2 + self._text_margin * 6 + self._prefix_w + self._suffix_w
+        image_w = self._padding * 2 + self._text_margin_w * 4 + self._prefix_w + self._suffix_w
+        image_h = self._padding * 2 + self._text_margin_h * 2 + self._text_h
         img = Image.new(mode='RGBA', size=(image_w, image_h), color=_logo_color)
         # Create draw
         draw = ImageDraw.Draw(img)
         # Draw highlight box
         draw.rectangle(
             xy=(
-                self._padding + self._text_margin * 2 + self._prefix_w,
-                self._padding + self._text_margin,
+                self._padding + self._text_margin_w * 2 + self._prefix_w,
+                self._padding + self._round_radius,
                 image_w - self._padding,
-                image_h - self._padding - self._text_margin
+                image_h - self._padding - self._round_radius
 
             ), fill=_highlight_color, width=0
         )
         draw.rectangle(
             xy=(
-                self._padding + self._text_margin * 3 + self._prefix_w,
+                self._padding + self._text_margin_w * 3 + self._prefix_w,
                 self._padding,
-                image_w - self._padding - self._text_margin,
+                image_w - self._padding - self._round_radius,
                 image_h - self._padding
 
             ), fill=_highlight_color, width=0
         )
         draw.pieslice(
             xy=(
-                self._padding + self._text_margin * 2 + self._prefix_w,
+                self._padding + self._text_margin_w * 2 + self._prefix_w,
                 self._padding,
-                self._padding + self._text_margin * 2 + self._prefix_w + self._round_radius * 2,
+                self._padding + self._text_margin_w * 2 + self._prefix_w + self._round_radius * 2,
                 self._padding + self._round_radius * 2
             ), start=180, end=270, fill=_highlight_color, width=0
         )
@@ -96,9 +100,9 @@ class Logo:
         )
         draw.pieslice(
             xy=(
-                self._padding + self._text_margin * 2 + self._prefix_w,
+                self._padding + self._text_margin_w * 2 + self._prefix_w,
                 image_h - self._padding - self._round_radius * 2,
-                self._padding + self._text_margin * 2 + self._prefix_w + self._round_radius * 2,
+                self._padding + self._text_margin_w * 2 + self._prefix_w + self._round_radius * 2,
                 image_h - self._padding
             ), start=90, end=180, fill=_highlight_color, width=0
         )
@@ -113,14 +117,14 @@ class Logo:
         # Draw texts
         draw.text(
             xy=(
-                self._padding + self._text_margin,
-                self._padding + self._text_margin
+                self._padding + self._text_margin_w,
+                self._padding + self._text_margin_h
             ), text=self._prefix, fill=_prefix_color, font=self._font
         )
         draw.text(
             xy=(
-                self._padding + self._text_margin * 4 + self._prefix_w,
-                self._padding + self._text_margin
+                self._padding + self._text_margin_w * 3 + self._prefix_w,
+                self._padding + self._text_margin_h
             ), text=self._suffix, fill=_suffix_color, font=self._font
         )
         return img
