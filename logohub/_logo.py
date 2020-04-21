@@ -57,10 +57,9 @@ class Logo:
         :return:
         """
         # Measure text size
-        self._prefix_w, self._text_h = self._font.getsize(self._prefix)
+        _, self._text_h = self._font.getsize('bg')
+        self._prefix_w, _ = self._font.getsize(self._prefix)
         self._suffix_w, _ = self._font.getsize(self._suffix)
-        # Fix text height
-        self._text_h += int(math.ceil(font_size / 6.0))
         # Calculate sizes bases on the font size
         self._padding = int(math.ceil(font_size / 3.0))
         self._text_margin_w = int(math.ceil(font_size / 10.0))
@@ -84,8 +83,8 @@ class Logo:
             xy=(
                 self._padding + self._text_margin_w * 2 + self._prefix_w,
                 self._padding + self._round_radius,
-                image_w - self._padding,
-                image_h - self._padding - self._round_radius
+                image_w - 1 - self._padding,
+                image_h - 1 - self._padding - self._round_radius
 
             ), fill=self._scheme.highlight_color, width=0
         )
@@ -93,8 +92,8 @@ class Logo:
             xy=(
                 self._padding + self._text_margin_w * 3 + self._prefix_w,
                 self._padding,
-                image_w - self._padding - self._round_radius,
-                image_h - self._padding
+                image_w - 1 - self._padding - self._round_radius,
+                image_h - 1 - self._padding
 
             ), fill=self._scheme.highlight_color, width=0
         )
@@ -108,26 +107,26 @@ class Logo:
         )
         draw.pieslice(
             xy=(
-                image_w - self._padding - self._round_radius * 2,
+                image_w - 1 - self._padding - self._round_radius * 2,
                 self._padding,
-                image_w - self._padding,
+                image_w - 1 - self._padding,
                 self._padding + self._round_radius * 2
             ), start=270, end=0, fill=self._scheme.highlight_color, width=0
         )
         draw.pieslice(
             xy=(
                 self._padding + self._text_margin_w * 2 + self._prefix_w,
-                image_h - self._padding - self._round_radius * 2,
+                image_h - 1 - self._padding - self._round_radius * 2,
                 self._padding + self._text_margin_w * 2 + self._prefix_w + self._round_radius * 2,
-                image_h - self._padding
+                image_h - 1 - self._padding
             ), start=90, end=180, fill=self._scheme.highlight_color, width=0
         )
         draw.pieslice(
             xy=(
-                image_w - self._padding - self._round_radius * 2,
-                image_h - self._padding - self._round_radius * 2,
-                image_w - self._padding,
-                image_h - self._padding
+                image_w - 1 - self._padding - self._round_radius * 2,
+                image_h - 1 - self._padding - self._round_radius * 2,
+                image_w - 1 - self._padding,
+                image_h - 1 - self._padding
             ), start=0, end=90, fill=self._scheme.highlight_color, width=0
         )
         # Draw texts
