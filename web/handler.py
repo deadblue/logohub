@@ -8,7 +8,7 @@ import logohub
 
 _logger = logging.getLogger(__name__)
 
-def help():
+def show_help():
     url_prefix = '%s://%s' % (flask.request.scheme, flask.request.host)
     buf = [
         'Pronhub Style Logo Service',
@@ -34,20 +34,21 @@ def help():
     resp.headers.set('Content-Type', 'text/plain')
     return resp
 
-def draw(spec:str):
+def draw_logo(spec:str):
     spec = _parse_spec(spec)
     if spec is None:
-        return help()
+        # Redirect to root when error
+        return flask.redirect('/')
     else:
         return _make_logo(spec)
 
 def _parse_spec(text:str):
     # strip extension
-    format = 'png'
+    file_type = 'png'
     if text.endswith('.png'):
-        format, text = 'png', text[:-4]
+        file_type, text = 'png', text[:-4]
     elif text.endswith('.webp'):
-        format, text = 'webp', text[:-5]
+        file_type, text = 'webp', text[:-5]
     # parse spec text
     fields = text.split('-')
     # prefix and suffix
@@ -60,7 +61,7 @@ def _parse_spec(text:str):
         'suffix': fields[1],
         'font-size': 60,
         'scheme': 'black',
-        'format': format
+        'format': file_type
     }
     # font size
     if len(fields) > 2:
@@ -94,7 +95,6 @@ def _make_logo(spec:dict):
     # Make response
     resp = flask.make_response(img_data, 200)
     resp.headers.set('Content-Type', mime_type)
-    resp.headers.set('Content-Length', len(img_data))
     resp.headers.set('Content-Disposition', 'inline', filename=file_name)
     resp.headers.set('Cache-Control', 'immutable')
     return resp
