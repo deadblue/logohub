@@ -1,0 +1,14 @@
+runtime: python37
+entrypoint: gunicorn -b :$PORT main:app
+
+instance_class: F1
+automatic_scaling:
+  target_cpu_utilization: 0.95
+  target_throughput_utilization: 0.95
+  max_concurrent_requests: 80
+  max_instances: 2
+  max_idle_instances: 1
+
+handlers:
+  - url: /.*
+    script: auto

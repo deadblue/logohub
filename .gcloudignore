@@ -1,0 +1,12 @@
+.gcloudignore
+
+.git
+.gitignore
+
+.idea
+
+venv
+__pycache__
+
+LICENSE
+README.md
