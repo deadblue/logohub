@@ -2,6 +2,7 @@ __author__ = 'deadblue'
 
 import logging
 import math
+import io
 
 from PIL import Image, ImageDraw
 
@@ -66,7 +67,7 @@ class Logo:
         self._text_margin_h = int(math.ceil(font_size / 10.0))
         self._round_radius = int(math.ceil(font_size / 10.0))
 
-    def render_image(self):
+    def render(self):
         # Image size
         image_w = self._padding * 2 + self._text_margin_w * 4 + self._prefix_w + self._suffix_w
         image_h = self._padding * 2 + self._text_margin_h * 2 + self._text_h
@@ -143,3 +144,13 @@ class Logo:
             ), text=self._suffix, fill=self._scheme.suffix_color, font=self._font
         )
         return img
+
+    def png(self):
+        out = io.BytesIO()
+        self.render().save(out, 'png')
+        return out.getvalue()
+
+    def webp(self):
+        out = io.BytesIO()
+        self.render().save(out, 'webp')
+        return out.getvalue()
