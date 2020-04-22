@@ -54,8 +54,6 @@ gcloud app deploy gae-app.yaml
 
 # TODO list
 
-* Add parameter for setting logo background transparent.
-* Add parameter for setting padding size around the logo.
 * Support SVG format.
 
 # License
