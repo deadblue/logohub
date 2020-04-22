@@ -1,5 +1,8 @@
 ![LogoHub](https://logohub.appspot.com/Logo-Hub-36.png?padding=0&scheme=white&transparent=true)
 
+![](https://img.shields.io/badge/Release-v1.0.0-brightgreen?style=flat-square)
+![](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
 A Pornhub-Style Logo Service.
 
 This project takes inspiration from [Shields IO](https://shields.io/).
@@ -11,7 +14,7 @@ This project takes inspiration from [Shields IO](https://shields.io/).
 
 # Usage
 
-Simply use URL as an image, which follows this this spec: 
+Simply use URL as an image, which follows this spec: 
 
 ```
 <HostURL>/<Prefix>-<Suffix>[-FontSize][.Format][?Parameters]
