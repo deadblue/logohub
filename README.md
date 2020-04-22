@@ -11,9 +11,15 @@ This project takes inspiration from [Shields IO](https://shields.io/).
 
 # Usage
 
-URL Spec: `<HostURL>/<Prefix>-<Suffix>[-FontSize][.Format]`
+Simply use URL as an image, which follows this this spec: 
 
-**Parameters:**
+```
+<HostURL>/<Prefix>-<Suffix>[-FontSize][.Format]
+```
+
+> Component in `<>` means required, in `[]` means optional.
+
+**Components:**
 
 * HostURL: The root URL where the project be deployed.
 * Prefix: Prefix text on the logo, can not be empty.
@@ -43,6 +49,7 @@ gcloud app deploy gae-app.yaml
 
 * Add parameter for setting logo background transparent.
 * Add parameter for setting padding size around the logo.
+* Support SVG format.
 
 # License
 
