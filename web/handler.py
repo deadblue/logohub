@@ -10,6 +10,9 @@ from web._util import must_atoi
 
 _logger = logging.getLogger(__name__)
 
+def favicon():
+    return flask.send_file('static/favicon.ico', 'image/x-icon')
+
 def show_help():
     url_prefix = '%s://%s' % (flask.request.scheme, flask.request.host)
     buf = [
