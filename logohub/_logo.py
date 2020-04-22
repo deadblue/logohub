@@ -13,32 +13,35 @@ _logger = logging.getLogger(__name__)
 
 class Logo:
 
-    # texts
-    _prefix = None
-    _suffix = None
+    # prefix and suffix text
+    _prefix, _suffix = None, None
+    # transparent flag
     _transparent = None
+    # padding size
+    _padding = None
     # font object
     _font = None
+    # color scheme
     _scheme = None
-    # text size
+    # sizes
+    _text_h = 0
     _prefix_w = 0
     _suffix_w = 0
-    _text_h = 0
-    # other size
-    _padding = 0
     _text_margin_w = 0
     _text_margin_h = 0
     _round_radius = 0
 
-    def __init__(self, prefix:str, suffix:str,
-                 font_size:int=60, scheme:str='black',
-                 transparent:bool=False):
+    def __init__(self, prefix:str, suffix:str, font_size:int=60,
+                 scheme:str='black', transparent:bool=False, padding:int=None, **kwargs):
         """
-        :param prefix: Prefix text.
-        :param suffix: Suffix text.
+        :param prefix: Prefix text on logo.
+        :param suffix: Suffix text on logo
         :param font_size: Font size in pixel, default is 60.
         :param scheme: Color scheme, "black" or "white", default is "black".
-        :param transparent: Indicate whether background is transparent, default is false.
+        :param transparent: Transparent flag, pass true will make
+            the background transparent, default is false.
+        :param padding: Padding size around the logo, pass None or
+            negative will use a auto-calculated size.
         """
         self._prefix = prefix
         self._suffix = suffix
@@ -48,6 +51,7 @@ class Logo:
         else:
             self._scheme = black
         self._transparent = transparent
+        self._padding = padding
         # Measure sizes
         self._measure(font_size)
 
@@ -61,10 +65,12 @@ class Logo:
         self._prefix_w, _ = self._font.getsize(self._prefix)
         self._suffix_w, _ = self._font.getsize(self._suffix)
         # Calculate sizes bases on the font size
-        self._padding = int(math.ceil(font_size / 3.0))
         self._text_margin_w = int(math.ceil(font_size / 10.0))
         self._text_margin_h = int(math.ceil(font_size / 10.0))
         self._round_radius = int(math.ceil(font_size / 10.0))
+        # Calculate padding size only when not set
+        if self._padding is None or self._padding < 0:
+            self._padding = int(math.ceil(font_size / 3.0))
 
     def render(self):
         # Image size
