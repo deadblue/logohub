@@ -1,4 +1,4 @@
-![LogoHub](https://logohub.appspot.com/Logo-Hub-36-white.png)
+![LogoHub](https://logohub.appspot.com/Logo-Hub-36.png?padding=0&scheme=white&transparent=true)
 
 A Pornhub-Style Logo Service.
 
@@ -14,7 +14,7 @@ This project takes inspiration from [Shields IO](https://shields.io/).
 Simply use URL as an image, which follows this this spec: 
 
 ```
-<HostURL>/<Prefix>-<Suffix>[-FontSize][.Format]
+<HostURL>/<Prefix>-<Suffix>[-FontSize][.Format][?Parameters]
 ```
 
 > Component in `<>` means required, in `[]` means optional.
@@ -24,8 +24,15 @@ Simply use URL as an image, which follows this this spec:
 * HostURL: The root URL where the project be deployed.
 * Prefix: Prefix text on the logo, can not be empty.
 * Suffix: Suffix text on the logo, can not be empty.
-* FontSize: Font size for prefix and suffix text, should be between 30 to 200, default is 60.
-* Format: File format for the logo image, can be "png" or "webp", default is "png".
+* FontSize: Font size for prefix and suffix, in range of 30 to 200, default is 60.
+* Format: File format for logo image, can be "png" or "webp", default is "png".
+* Parameters: QueryString-encoded optional parameters, see below for details.
+
+**Parameters:**
+
+* scheme: Color scheme of the logo, can be "black" or "white", default is "black".
+* transparent: Set background to transparent or not, default is "false".
+* padding: Padding size around the logo, unset or negative will use a default size.
 
 **Restriction:**
 
