@@ -7,6 +7,7 @@ import flask
 import logohub
 
 from web._util import must_atoi
+from web._mime import mime_types
 
 _logger = logging.getLogger(__name__)
 
@@ -25,20 +26,20 @@ def show_help():
         '    Prefix: Prefix text on the logo, can not be empty.',
         '    Suffix: Suffix text on the logo, can not be empty.',
         '    FontSize: Font size for prefix and suffix, in range of 30 to 200, default is 60.',
-        '    Format: File format for logo image, can be "png" or "webp", default is "png".',
+        '    Format: Image file format, supports svg/png/webp, default is "svg".',
         '    Parameters: QueryString-encoded optional parameters, see below for details.',
         '',
         'Parameters: ',
-        '    scheme: Color scheme of the logo, can be "black" or "white", default is "black".',
+        '    scheme: Color scheme of the logo, supports black/white, default is "black".',
         '    transparent: Set background to transparent or not, default is "false".',
         '    padding: Padding size around the logo, unset or negative will use a default size.',
         '',
         'Example:',
         '    %s/hello-world' % url_prefix,
-        '    %s/hello-world-120' % url_prefix,
-        '    %s/hello-world.webp' % url_prefix,
+        '    %s/hello-world-90' % url_prefix,
+        '    %s/hello-world.png' % url_prefix,
         '    %s/hello-world?transparent=true' % url_prefix,
-        '    %s/hello-world-30.webp?scheme=white&transparent=true&padding=0' % url_prefix,
+        '    %s/hello-world-120.webp?scheme=white&transparent=true&padding=0' % url_prefix,
         ''
     ]
     resp = flask.make_response('\n'.join(buf), 200)
@@ -55,11 +56,13 @@ def draw_logo(spec:str):
 
 def _parse_spec(text:str, args):
     # Strip file format
-    file_type = 'png'
-    if text.endswith('.png'):
-        file_type, text = 'png', text[:-4]
+    fmt = 'svg'
+    if text.endswith('.svg'):
+        fmt, text = 'svg', text[:-4]
+    elif text.endswith('.png'):
+        fmt, text = 'png', text[:-4]
     elif text.endswith('.webp'):
-        file_type, text = 'webp', text[:-5]
+        fmt, text = 'webp', text[:-5]
     # Parse spec text
     fields = text.split('-')
     if len(fields) < 2 or len(fields[0]) == 0 or len(fields[1]) == 0:
@@ -68,7 +71,7 @@ def _parse_spec(text:str, args):
         'prefix': fields[0],
         'suffix': fields[1],
         'font_size': 60,
-        'format': file_type
+        'format': fmt
     }
     # Parse font size.
     if len(fields) > 2:
@@ -91,12 +94,14 @@ def _make_logo(spec:dict):
     # Create logo
     logo = logohub.Logo(**spec)
     # Export to specific format
-    if spec.get('format', '') == 'webp':
+    fmt = spec.get('format', 'svg')
+    if fmt == 'webp':
         img_data = logo.webp()
-        mime_type = 'image/webp'
-    else:
+    elif fmt == 'png':
         img_data = logo.png()
-        mime_type = 'image/png'
+    else:
+        img_data = logo.svg()
+    mime_type = mime_types[fmt]
     file_name = '%(prefix)s-%(suffix)s.%(format)s' % spec
     # Make response
     resp = flask.make_response(img_data, 200)
